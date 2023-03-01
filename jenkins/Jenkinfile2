@@ -1,0 +1,55 @@
+pipeline {
+    agent any 
+    
+    parameters {
+        string defaultValue: 'main', name: 'BRANCH', trim: true
+    }
+
+    environment {
+        BRANCH_NAME = "${BRANCH}"
+        USER_NAME = "bh"
+        USER_ID = "01"
+    }
+
+    stages{
+        agent {lable :'slave1'}
+        stage('BUILD') {
+            environment {     }
+            steps{
+                 sh '''
+                    sleep 5
+                    echo "This is a BUILD stage $BRANCH_NAME"
+                '''
+                script {
+                    env.USER_GROUP = "grp1"
+                    env.USER_NAME = "hb"
+                    env.USER_ID = "10"
+                }
+                echo "current user is ${env.USER_NAME}"
+                echo "current user id  is ${env.USER_ID}"
+                echo "current user group is ${env.USER_GROUP}"
+            }
+        }
+
+        stage('TEST') {
+            steps {
+                sh '''
+                    sleep 6
+                    echo "This is a TEST stage $BRANCH_NAME"
+                '''
+                echo "current user is ${env.USER_NAME}"
+                echo "current user id  is ${env.USER_ID}"
+            }
+        }
+
+        stage('DEPLOY') {
+            steps{
+                sh '''
+                    sleep 5
+                    echo "This is a DEPLOY stage $BRANCH_NAME"
+                '''
+            }
+        }
+    }
+}
+
