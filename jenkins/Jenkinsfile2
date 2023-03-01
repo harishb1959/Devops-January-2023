@@ -12,19 +12,18 @@ pipeline {
     }
 
     stages{
-        agent {lable :'slave1'}
+        
         stage('BUILD') {
-            environment {     }
+            agent {lable :'slave1'}
+            environment {  env.USER_GROUP = "grp1"
+                    env.USER_NAME = "hb"
+                    env.USER_ID = "10"   }
             steps{
                  sh '''
                     sleep 5
                     echo "This is a BUILD stage $BRANCH_NAME"
                 '''
-                script {
-                    env.USER_GROUP = "grp1"
-                    env.USER_NAME = "hb"
-                    env.USER_ID = "10"
-                }
+                
                 echo "current user is ${env.USER_NAME}"
                 echo "current user id  is ${env.USER_ID}"
                 echo "current user group is ${env.USER_GROUP}"
