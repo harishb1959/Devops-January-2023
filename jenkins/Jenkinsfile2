@@ -14,10 +14,9 @@ pipeline {
     stages{
         
         stage('BUILD') {
-            agent {lable :'slave1'}
-            environment {  env.USER_GROUP = "grp1"
-                    env.USER_NAME = "hb"
-                    env.USER_ID = "10"   }
+            environment {  USER_GROUP = "grp1"
+                    USER_NAME = "hb"
+                    USER_ID = "10"   }
             steps{
                  sh '''
                     sleep 5
