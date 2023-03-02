@@ -1,0 +1,28 @@
+// Run a particular stage based on the parameter passed as stage name ? 
+pipeline {
+    agent any 
+    parameters {
+        choice(name: 'STAGE_NAME', choices: ['S-1', 'S-2'], description: 'Enter stage name you want to execute?')
+    }
+    stages {
+        stage('S-1') {
+            when { 
+                expression{ params.STAGE_NAME == "S-1" }
+            }    
+            steps{
+                print "DEBUG: parameter STAGE_NAME = ${params.STAGE_NAME}"
+            }
+        }
+
+        stage('S-2'){
+            when { 
+                expression{ params.STAGE_NAME == "S-2" }
+            }    
+            steps{
+                print "DEBUG: parameter STAGE_NAME = ${params.STAGE_NAME}"
+            }    
+        }
+    }
+}
+
+

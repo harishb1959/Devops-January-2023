@@ -1,0 +1,55 @@
+// Run stages only if the branch is master
+pipeline {
+    agent any
+    stages{
+        stage('S-1') {
+            when {
+                branch 'main'
+            }
+            steps{
+                echo " S-1 executes if branch is main"
+            }
+        }
+
+        stage('S-2') {
+            when {
+                branch 'branch1'
+            }
+            steps{
+                echo " S-1 executes if branch is branch1"
+            }
+        }
+    }
+}
+
+
+//to run 2 tests in parallel only if branch is master
+pipeline {
+    agent any
+    stages{
+        stage('parallel') {
+            parallel{
+        stage(S-1) {
+            when {
+                branch 'main'
+            }
+            steps{
+                echo "S-1 executes if branch is main"
+            }
+        }
+
+        stage(S-2) {
+            when {
+                branch 'main'
+            }
+            steps{
+                echo "S-2 executes if branch is main"
+            }
+        }
+        }
+        }
+    }
+}
+
+
+
