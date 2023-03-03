@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('S-1') {
             when {
-                branch 'main'
+                branch 'master'
                 }
             steps{
                 
