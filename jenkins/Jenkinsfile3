@@ -7,7 +7,9 @@ pipeline {
 
     stages {
         stage('S-1') {
-            
+            when {
+                branch 'main'
+                }
             steps{
                 
                 sh '''
