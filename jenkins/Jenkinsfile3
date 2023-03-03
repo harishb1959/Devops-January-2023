@@ -2,7 +2,7 @@
 pipeline {
     agent any
     parameters {
-        choice( name: 'STAGE_NAME' , choices;['S-4','S-5'] , description: 'which stage do you want to run?' )
+        choice( name: 'STAGE_NAME' , choices:['S-4','S-5'] , description: 'which stage do you want to run?' )
     }
 
     stages{
