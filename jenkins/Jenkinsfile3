@@ -12,7 +12,7 @@ pipeline {
             }
             steps{
                 catchError(buildresult: 'SUCCESS' , stageResult: 'FAILURE')
-                SH '''
+                sh '''
                 echo " S-1 executes if branch is main"
                     exit 1
                 '''
