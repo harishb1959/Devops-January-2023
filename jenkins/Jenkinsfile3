@@ -5,13 +5,13 @@ pipeline {
         choice( name: 'STAGE_NAME' , choices:['S-4','S-5'] , description: 'which stage do you want to run?' )
     }
 
-    stages{
+    stages {
         stage('S-1') {
             when {
                 branch 'main'
             }
             steps{
-                catchError(buildresult: 'SUCCESS' , stageResult: 'FAILURE')
+                catchError(buildResult: 'SUCCESS' , stageResult: 'FAILURE')
                 sh '''
                 echo " S-1 executes if branch is main"
                     exit 1
@@ -28,19 +28,19 @@ pipeline {
             }
         }
         //to run 2 tests in parallel only if branch is master
-        stage('parallel') {
+        stage('parallel_stage') {
             parallel{
-                stage(p-1) {
+                stage('p-1') {
                     steps{
                         echo "p-1 executes along with p-2 and p-3"
                     }
                 }
-                stage(p-2) {
+                stage('p-2') {
                     steps{
                         echo "p-2 executes along with p-1 and p-3"
                     }
                 }
-                stage(p-3) {
+                stage('p-3') {
                     steps{
                         echo "p-3 executes along with p-1 and p-2"
                     }
@@ -48,7 +48,7 @@ pipeline {
             }
         }
         //parameter based execution
-        stage(S-4) {
+        stage('S-4') {
             when {
                 expression{ params.STAGE_NAME == "S-4"}
             }
@@ -56,7 +56,7 @@ pipeline {
                 echo " debug: parameter STAGE_NAME = ${params.STAGE_NAME}"
             }
         }
-        stage(S-5) {
+        stage('S-5') {
             when {
                 expression{ params.STAGE_NAME == "S-5"}
             }
