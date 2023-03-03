@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('S-1') {
                 steps{
-                catchError(buildResult: 'SUCCESS' , stageResult: 'FAILURE')
                 sh '''
                 echo " S-1 executes if branch is main"
                     exit 1
