@@ -7,14 +7,12 @@ pipeline {
 
     stages {
         stage('S-1') {
-            when {
-                branch 'main'
-            }
+            
             steps{
-                catchError(buildResult: 'SUCCESS' , stageResult: 'FAILURE')
+                
                 sh '''
                 echo " S-1 executes if branch is main"
-                    exit 1
+                    exit 0
                 '''
             }
         }
@@ -24,7 +22,7 @@ pipeline {
                 branch 'branch1'
             }
             steps{
-                echo " S-1 executes if branch is branch1"
+                echo " S-2 executes if branch is branch1"
             }
         }
         //to run 2 tests in parallel only if branch is master
