@@ -1,0 +1,11 @@
+**/.terraform
+**/terraform.exe
+.idea
+*.iml
+
+# Compiled files
+**/*.tfstate
+**/*.tfstate.backup
+**/*.terraform.tfstate*
+**/.terraform.lock.hcl
+**/.terraform.lock.hcl
