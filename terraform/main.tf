@@ -1,8 +1,42 @@
-resource "aws_instance" "ec2-tf" {
-  ami           = "ami-0f8ca728008ff5af4"
-  instance_type = "t2.micro"
+locals {
+  app_port = 80
+}
+
+resource "aws_security_group" "allow_ssh" {
+  name        = var.seq_grp_name
+  description = "Allow inbound traffic for ssh"
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = local.app_port
+    to_port = local.app_port
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0 
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
-    Name = "tf-instance"
+    Name = "allow ssh,http"
+  }
+}
+
+resource "aws_instance" "ec2-tf" {
+  ami           = var.ami_type
+  instance_type = var.ec2_type
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  tags = {
+    Name = "tf-instance1"
   }
 
   key_name = "test104633"
