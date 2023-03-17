@@ -1,58 +1,29 @@
-locals {
-  app_port = 80
+module "create_dynamodb" {
+    source = "./modules/create_dynamodb"
+    table_name = var.root_table_name
+    partition_key = var.root_partition_key
 }
 
-resource "aws_security_group" "allow_ssh" {
-  name        = var.seq_grp_name
-  description = "Allow inbound traffic for ssh"
-
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = local.app_port
-    to_port = local.app_port
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port = 0
-    to_port = 0 
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "allow ssh,http"
-  }
+module "create_seq_grp" {
+    source = "./modules/create_seq_grp"
+    seq_grp_name = var.root_seq_grp_name
 }
 
-resource "aws_instance" "ec2-tf" {
-  ami           = var.ami_type
-  instance_type = var.ec2_type
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  tags = {
-    Name = "tf-instance1"
-  }
-
-  key_name = "test104633"
-
-  ebs_block_device {
-    device_name = "/dev/sda1"
-    volume_size = 8
-    volume_type = "gp2"
-  }
-
+module "create_pem" {
+    source = "./modules/create_pem"
+    key_name = var.root_key_name
+    key_path = var.root_key_path
 }
 
-resource "aws_s3_bucket" "s3" {
-  bucket = "hb-tf"
-  
-  tags = {
-    Name = "terraform-bucket"
-  }
+module "create_ec2" {
+    source = "./modules/create_ec2"
+    ami_id = var.root_ami_id
+    ec2_type = var.root_ec2_type
+    ec2_pem = module.create_pem.ec2_pem
+    seq_grp_id = module.create_seq_grp.seq_grp_id
+}
+
+module "create_s3" {
+    source = "./modules/create_s3"
+    s3_bucket_name = var.root_s3_bucket_name
 }

@@ -1,0 +1,8 @@
+root_table_name = "my_table"
+root_partition_key = "my_table_key"
+root_seq_grp_name = "my_sg"
+root_key_name = "my_pem"
+root_key_path = "keys/my_pem.pem"
+root_ami_id = "ami-0f8ca728008ff5af4"
+root_ec2_type = "t2.micro"
+root_s3_bucket_name = "hbuser-654005309267-s3-tf"

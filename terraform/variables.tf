@@ -1,15 +1,31 @@
-variable "ec2_type" {
-    type = string
-    default = "t2.micro"
-  
+variable "root_table_name" {
+    type = string 
 }
-variable "ami_type" {
-    type = string
-    default = "ami-0f8ca728008ff5af4"
-  
+
+variable "root_partition_key" {
+    type = string 
 }
-variable "seq_grp_name" {
+
+variable "root_seq_grp_name" {
+    type = string 
+}
+
+variable "root_key_name" {
+    type = string 
+}
+
+variable "root_key_path" {
+    type = string 
+}
+
+variable "root_ami_id" {
     type = string
-    default = "tr_sq"
-  
+}
+
+variable "root_ec2_type" {
+    type = string
+}
+
+variable "root_s3_bucket_name" {
+    type = string
 }
