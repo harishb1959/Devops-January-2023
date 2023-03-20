@@ -29,3 +29,15 @@ variable "root_ec2_type" {
 variable "root_s3_bucket_name" {
     type = string
 }
+
+variable "root_ec2_user" {
+    type = string 
+}
+
+variable "root_source_path" {
+    type = string 
+}
+
+variable "root_destination_path" {
+    type = string 
+}
