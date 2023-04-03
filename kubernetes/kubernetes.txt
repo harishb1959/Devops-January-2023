@@ -1,0 +1,129 @@
+Kubernetes - k8s 
+The architecture of k8s differs from master and worker node 
+
+	Master node components 
+		1. Api Server / kube-api-server
+			- It is the main management point of the cluster and also called 
+			  as brain of the cluster.
+			- All the components are directly connected to API serve, they 
+			  communicate through API server only and no other component will 
+			  communicate directly with each other.
+			- This is the only component which connects and got access to etcd.
+			- All the cluster requests are authenticated and authorised by API server.
+			- API server has a watch mechanism for watching the changes in cluster.
+			
+		2. etcd 
+			- ectd is a distributed , consistent key value store used for 
+			  storing the complete cluster information/data.
+			- ectd contains data such as configuration management of cluster,
+              distributed work and basically complete cluster information.			
+			
+		3. scheduler / kube-scheduler
+			- The scheduler always watches for a new pod request and 
+			  decides which worker node this pod should be created.
+			- Based on the worker node load, affinity and anti-affiny, taint configuration 
+			  pod will be scheduled to a particular node.
+			  
+		Controller manager /control manager / kube-controller 
+			- It is a daemon that always runs and embeds core control loops known as controllers. 
+			- K8s has some inbuild controllers such as Deployment, DaemonSet, ReplicaSet, Replication controller,
+			  node controller, jobs, cronjob, endpoint controller, namespace controller etc.	
+			
+		Cloud controller manager 
+			- These controller help us to connect with the public cloud provider service and this component 
+			  is maintained by cloud providers only.
+
+Worker node components 
+		kubelet 
+			- It is an agent that runs on each and every worker node and it alsways watches the API 
+			  server for pod related changes running in its worker node.
+			- kubelet always make sure that the assigend pods to its worker node is running.
+			- kubelet is the one which communicates with containarisation tool (docker daemon)
+              		  through docker API (CRI). 	
+			- work of kubelet is to create and run the pods. Always reports the status of the worker node 
+			  and each pod to API server. (uses a tool call cAdvisor)
+			- Kubelet is the one which runs probes.	
+		
+		kube service proxy 
+			(in k8s service means networking)
+			- Service proxy runs on each and every worker node and is responsble for watching API 
+			  server for any changes in service configuration (any network related configuration).	
+			- Based on the configuration service proxy manages the entire network of worker node.
+
+		Container runtime interface (CRI)
+			- This component initialy identifies the container technology and connects it to kubelet.
+			
+		pod
+			- pods are the smallest deployable object in kuberntes.
+			- pod should contain atleast one container and can have n number of containers.
+			- If pod contains more than one container all the container share the same memory assigned to that pod.
+
+
+Assignment: What happens when a new pod request comes to control plane / Master node ? 
+			https://medium.com/jorgeacetozi/kubernetes-master-components-etcd-api-server-controller-manager-and-scheduler-3a0179fc8186
+
+Linux namespaces and cgroups 
+	namespaces 
+
+
+YAML syntax 
+ - filetype .yaml or .yml
+ - YAML consists of key - value pairs 
+ - Key is always defined by the tool - k8s 
+ - Values will be defined by user.
+ 		Types of values we can provide 
+ 			- Integer (Numeric)
+ 			- Sting (Alphanumeric)
+ 			- Array 
+ 			- List 
+ 			- Boolean 
+
+ 	List 
+ 		name: Harsha
+ 		hobbies: ["Reaading", "Coding", "Driving"]
+
+ 		 			(OR)
+
+ 		name: Harsha
+ 		hobbies: 
+ 			- Driving 
+ 			- Reading 
+ 			- Coding  					
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+    name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+         - containerPort: 8080
+       - containerPort: 50000
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
