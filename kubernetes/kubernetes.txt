@@ -1121,3 +1121,101 @@ Multi master cluster
 		- Always tell odd number of nodes (any odd number starting with 3, 5, 7, 9)
 		- Based on the quorum value we choose only odd number of nodes starting with 3 to 
 		  achive better fault tollerance cluster.
+
+
+
+JOBS
+
+	restartPolicy: 
+	   - This is a pod option on of job 
+	   - Different policies are 
+		Always 
+		  - This is the default restartPolicy. Containers will always be restarted if they stop and 
+		    even if they have completed successfully.	
+	
+		OnFailure
+		   - only restart the pod if the container process exits with an error.
+		   - If the pod is determined to be unhealthy and restarted by a probe then also pod 
+	             will be restarted.
+		
+		Never 
+		   - Pod are never restated even if the container inside pod exists with error.
+
+	apiVersion: batch/v1
+	kind: Job
+	metadata: 
+	   name: my-job 
+	spec:
+	   schedule: "* * * * *" 
+	   completions: 10
+	   parallelism: 2
+	   activeDeadlineSecond: 20	
+	   template:
+	     metadata: 
+		name: my-busybox	 
+             spec: 
+               containers:
+                 - name: busybox 
+                   image: busy box
+                   command: ["echo","k8s JOBS"]
+	       restartPolicy: Never	  
+	
+
+	Common options 
+	
+	completions: 
+		- This is the number of times the job to run. 
+		- The default value is 1
+		- If, completions is 5 then job will run 5 times means 5 pods.
+	
+	parallelism:
+ 		- This is number of jobs to run parallel.
+		- The default value is 1 
+		- By default JOBS run sequentially so to run jobs parallel we need to use this field.
+		 		
+	activeDeadlineSecond:
+		- This filed defines the execution time of pod.
+		- If pod takes more than this time then pod will be terminated.		
+		   
+	backoffLimit:
+		- The number of pod to be created / limited even after failure.
+		- Due to some reason our pods may fail and it affects the completion of job, where 
+		  our job will be creating pods till it gets succeed which will put a load on the cluster.
+                
+	schedule: (CronJOB)
+	     - To the JOB at a particular time.
+	     - Uses the cron syntax (* * * * *) 	
+
+	apiVersion: batch/v1
+	kind: CronJob
+	metadata: 
+	   name: my-job 
+	spec:
+	  schedule: "* * * * *"
+	  successfulJobsHistoryLimit: 0
+	  failedJobsHistoryLimit: 0        
+	  jobTemplate:
+	     spec:
+	       template:      
+	          metadata: 
+	             name: my-busybox	 
+	          spec:
+	             containers:
+	             - name: busybox 
+	               image: busybox
+	               command: ["sh","-c","sleep 2;"]
+	             restartPolicy: OnFailure
+	
+
+Common errors 
+		ImagePullBackOff 
+			- Docker image registry is not accessible 
+			- Image name is incorrect.
+		
+		RunContainerError 
+			- Configmap / secrets are missing 
+			- volumes are not available 
+		
+		CrashLoopBackOff 
+			- This error comes when probe check fails.
+			- Error in docker image
